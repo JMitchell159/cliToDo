@@ -38,8 +38,9 @@ func main() {
 	}
 
 	cmds.register("addTask", addTask)
+	cmds.register("addList", addList)
 	cmds.register("listTasks", listTasks)
-
+	cmds.register("update", makeUrgent)
 	inputs := os.Args
 	if len(inputs) < 2 {
 		log.Fatal("not enough arguments provided")

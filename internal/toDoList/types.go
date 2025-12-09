@@ -68,10 +68,3 @@ func (list TaskList) MoveTask(old, new int) (TaskList, error) {
 	return list, nil
 }
 
-func (list TaskList) ListTasks() {
-	fmt.Println("Priority\tTask:")
-	for i, task := range list {
-		fmt.Printf("%d\t%s\n", i, task.Name)
-	}
-}
-

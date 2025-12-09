@@ -14,8 +14,12 @@ func CreateCollection() ListCollection {
 	return make(ListCollection)
 }
 
-func (listCol ListCollection) AddList(name string, list todolist.TaskList) {
+func (listCol ListCollection) AddList(name string, list todolist.TaskList) error {
+	if _, ok := listCol[name]; ok {
+		return fmt.Errorf("%s list already exists", name)
+	}
 	listCol[name] = list
+	return nil
 }
 
 func (listCol ListCollection) Save(listName string) error {
