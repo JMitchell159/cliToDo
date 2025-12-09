@@ -15,7 +15,7 @@ func addTask(s *state, cmd command) error {
 		switch(len(s.unfinished)) {
 		case 0:
 			list := todolist.CreateList()
-			list.AddTask(cmd.args[0])
+			list = list.AddTask(cmd.args[0])
 			s.unfinished.AddList("list1", list)
 		case 1:
 			for key, val := range s.unfinished {

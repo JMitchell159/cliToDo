@@ -7,10 +7,22 @@ import (
 
 func listTasks(s *state, cmd command) error {
 	if cmd.args == nil {
-		for key, val := range s.unfinished {
-			fmt.Printf("=====%s=====\n", key)
-			for i, v := range val {
-				fmt.Printf("%d. %s @ %v\n", i + 1, v.Name, v.Created)
+		if len(s.warn) > 0 {
+			fmt.Println("=====URGENT=====")
+			for key, val := range s.warn {
+				fmt.Printf("=====%s=====\n", key)
+				for i, v := range val {
+					fmt.Printf("%d. %s @ %v\n", i + 1, v.Name, v.Created)
+				}
+			}
+		}
+		if len(s.unfinished) > 0 {
+			fmt.Println("=====Unfinished=====")
+			for key, val := range s.unfinished {
+				fmt.Printf("=====%s=====\n", key)
+				for i, v := range val {
+					fmt.Printf("%d. %s @ %v\n", i + 1, v.Name, v.Created)
+				}
 			}
 		}
 		return nil
