@@ -8,16 +8,16 @@ type command struct {
 }
 
 type commands struct {
-	handler map[string]func(command) error
+	handler map[string]func(*state, command) error
 }
 
-func (c *commands) run(cmd command) error {
+func (c *commands) run(s *state, cmd command) error {
 	handle, ok := c.handler[cmd.name]
 	if !ok {
 		return fmt.Errorf("unknown command: %s", cmd.name)
 	}
 
-	err := handle(cmd)
+	err := handle(s, cmd)
 	if err != nil {
 		return err
 	}
@@ -25,9 +25,9 @@ func (c *commands) run(cmd command) error {
 	return nil
 }
 
-func (c *commands) register(name string, f func(command) error) {
+func (c *commands) register(name string, f func(*state, command) error) {
 	if c.handler == nil {
-		c.handler = make(map[string]func(command) error)
+		c.handler = make(map[string]func(*state, command) error)
 	}
 
 	c.handler[name] = f

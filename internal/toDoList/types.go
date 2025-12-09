@@ -14,7 +14,7 @@ type Task struct {
 type TaskList []Task
 
 func CreateList() TaskList {
-	return make(TaskList, 8)
+	return make(TaskList, 0, 8)
 }
 
 func (list TaskList) AddTask(task string) TaskList {

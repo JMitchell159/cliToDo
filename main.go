@@ -1,8 +1,8 @@
 package main
 
 import (
-	"fmt"
 	"log"
+	"os"
 
 	"github.com/JMitchell159/CLIToDo/internal/app"
 )
@@ -33,6 +33,33 @@ func main() {
 		finished: f,
 	}
 
-	fmt.Println(s)
+	cmds := commands{
+		handler: make(map[string]func(*state, command) error),
+	}
+
+	cmds.register("addTask", addTask)
+	cmds.register("listTasks", listTasks)
+
+	inputs := os.Args
+	if len(inputs) < 2 {
+		log.Fatal("not enough arguments provided")
+	}
+
+	cmd := command{
+		name: inputs[1],
+		args: nil,
+	}
+	if len(inputs) > 2 {
+		cmd.args = inputs[2:]
+	}
+
+	err = cmds.run(&s, cmd)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	s.unfinished.Save("unfinished")
+	s.warn.Save("warn")
+	s.finished.Save("finished")
 }
 
