@@ -7,7 +7,7 @@ import (
 	todolist "github.com/JMitchell159/CLIToDo/internal/toDoList"
 )
 
-func makeUrgent(s *state, cmd command) error {
+func update(s *state, cmd command) error {
 	if cmd.args != nil {
 		fmt.Println("The update handler does not take any arguments, all supplied arguments will be ignored.")
 	}
