@@ -39,8 +39,11 @@ func main() {
 
 	cmds.register("addTask", addTask)
 	cmds.register("addList", addList)
+	cmds.register("clearComplete", clearComplete)
 	cmds.register("complete", complete)
+	cmds.register("listComplete", listComplete)
 	cmds.register("listTasks", listTasks)
+	cmds.register("reset", reset)
 	cmds.register("update", update)
 	inputs := os.Args
 	if len(inputs) < 2 {
