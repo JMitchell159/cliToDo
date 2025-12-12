@@ -12,14 +12,18 @@ func update(s *state, cmd command) error {
 		fmt.Println("The update handler does not take any arguments, all supplied arguments will be ignored.")
 	}
 
+	fmt.Println("Making Urgent...")
+
 	for key, val := range s.unfinished {
 		for i, v := range val {
-			if time.Since(v.Created).Minutes() >= 5 {
-				if i == 0 {
-					s.unfinished[key] = val[i+1:]
-				} else if i == len(val) - 1 {
-					s.unfinished[key] = val[:i]
-				} else {
+			if time.Since(v.Created).Hours() >= float64(s.cfg.MakeUrgent) {
+				fmt.Println(v.Name)
+				switch(i) {
+				case 0:
+					s.unfinished[key] = val[1:]
+				case len(val)-1:
+					s.unfinished[key] = val[:len(val)-1]
+				default:
 					s.unfinished[key] = append(val[:i], val[i+1:]...)
 				}
 				val2, ok := s.warn[key]
@@ -36,6 +40,26 @@ func update(s *state, cmd command) error {
 			}
 		}
 	}
+
+	fmt.Println("...Removing...")
+
+	for key, val := range s.finished {
+		for i, v := range val {
+			if time.Since(v.Created).Hours() >= float64(s.cfg.RemoveFromComplete) {
+				fmt.Println(v.Name)
+				switch(i) {
+				case 0:
+					s.finished[key] = val[1:]
+				case len(val)-1:
+					s.finished[key] = val[:len(val)-1]
+				default:
+					s.finished[key] = append(val[:i], val[i+1:]...)
+				}
+			}
+		}
+	}
+
+	fmt.Println("...Finished")
 
 	return nil
 }

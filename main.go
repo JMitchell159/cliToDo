@@ -5,12 +5,14 @@ import (
 	"os"
 
 	"github.com/JMitchell159/CLIToDo/internal/app"
+	"github.com/JMitchell159/CLIToDo/internal/config"
 )
 
 type state struct {
 	unfinished app.ListCollection
 	warn app.ListCollection
 	finished app.ListCollection
+	cfg *config.Config
 }
 
 func main() {
@@ -26,11 +28,16 @@ func main() {
 	if err != nil {
 		log.Fatalf("error while loading finished tasks: %v", err)
 	}
+	c, err := config.Load()
+	if err != nil {
+		log.Fatalf("error while loading config: %v", err)
+	}
 
 	s := state{
 		unfinished: u,
 		warn: w,
 		finished: f,
+		cfg: c,
 	}
 
 	cmds := commands{
